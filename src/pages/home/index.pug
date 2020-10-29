@@ -1,0 +1,14 @@
+extend ../../layouts/main/layout
+
+
+
+block content
+  section.section
+    .container
+      .text-center
+        h1 Ты сегодня покормил кота?
+
+      .cats-card
+        include ../../layouts/main/datas/cats-card
+        - for ( value of cats_card.items )
+          .cats-card__item

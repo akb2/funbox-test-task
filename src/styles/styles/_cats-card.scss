@@ -1,0 +1,89 @@
+@use 'sass:math';
+@use '../functions/maps' as _maps;
+
+@use '../mixins/font';
+@use '../mixins/flex';
+
+@use '../styles/bootstrap';
+
+
+
+
+
+//------------------------------------------------------------------------------------------------------------
+// Данные
+//------------------------------------------------------------------------------------------------------------
+
+
+  $padding-top: 20px;
+  $padding-right: 12px;
+  $padding-bottom: 12px;
+  $padding-left: 45;
+
+  $item-count: 3;
+  $item-spacing-x: _maps.get( bootstrap.$settings, spacing );
+  $item-spacing-y: 30px;
+  $item-width: calc(( 100% - #{ $item-spacing-x * ( $item-count - 1 )}) / #{ $item-count });
+  $item-border-width: 4px;
+  $item-border-color: #1698d9;
+  $item-border-radius: 0 10px 10px 10px;
+  $item-angle-cut: $padding-left;
+
+
+//------------------------------------------------------------------------------------------------------------
+// Данные
+//------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+//------------------------------------------------------------------------------------------------------------
+// Стили
+//------------------------------------------------------------------------------------------------------------
+
+
+  .cats-card {
+    @include flex.init( row, wrap, center, stretch );
+
+
+    &__item {
+      border: $item-border-width solid $item-border-color;
+      padding-top: $padding-top;
+      padding-right: $padding-right;
+      padding-bottom: $padding-bottom;
+      padding-left: #{ $padding-left }px;
+      width: $item-width;
+      margin-top: $item-spacing-y;
+      border-radius: $item-border-radius;
+      clip-path: polygon( #{ $item-angle-cut }px 0, 100% 0, 100% 100%, 0 100%, 0 #{ $item-angle-cut }px );
+      position: relative;
+      /* TODO: Delete */ min-height: 300px;
+
+
+      // Срезанная граница
+      &:before {
+        $__width: $item-border-width * 1.2;
+        $__height: #{ math.sqrt( math.pow( $item-angle-cut, 2 ) * 2 )}px;
+        $__angle_cut: #{ $item-angle-cut }px;
+        $__top: calc( #{ $__angle_cut } - #{ $__height } - #{ $item-border-width });
+        background: $item-border-color;
+
+        content: ''; position: absolute;
+        top: $__top;
+        left: -$item-border-width;
+        display: block; width: $__width; height: $__height; transform: rotate( 45deg );
+        transform-origin: 50% 100%;
+      }
+
+
+      // Последующие элементы
+      & + & { margin-left: $item-spacing-x; }
+      &:nth-of-type( #{ $item-count }n + 1 ) { margin-left: 0; }
+    }
+  }
+
+
+//------------------------------------------------------------------------------------------------------------
+// Стили
+//------------------------------------------------------------------------------------------------------------

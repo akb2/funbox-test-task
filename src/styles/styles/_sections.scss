@@ -1,0 +1,28 @@
+@use '../mixins/background';
+@use '../mixins/flex';
+
+
+
+
+
+//------------------------------------------------------------------------------------------------------------
+// Стили
+//------------------------------------------------------------------------------------------------------------
+
+
+  .section {
+    @include background.init( url( '../images/backgrounds/carpet.jpg' ), center, center, repeat, 87px );
+    @include flex.init( row, wrap, center, center );
+    position: relative; min-width: 100%; min-height: 100vh;
+
+    &:before {
+      @include background.linear-gradient( 0deg, ( rgba( 0, 0, 0, .5 ) 0%, transparent 50%, rgba( 0, 0, 0, .5 ) 100% ));
+      content: ''; position: absolute; top: 0; left: 0;
+      display: block; width: 100%; height: 100%;
+    }
+  }
+
+
+//------------------------------------------------------------------------------------------------------------
+// Стили
+//------------------------------------------------------------------------------------------------------------
