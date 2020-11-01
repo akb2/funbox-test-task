@@ -10,5 +10,14 @@ block content
 
       .cats-card
         include ../../layouts/main/datas/cats-card
-        - for ( value of cats_card.items )
+        - for ( let value of cats_card.items )
           .cats-card__item
+            .cats-card__item-updesc= value.updesc
+            .cats-card__item-title= value.title
+            .cats-card__item-taste= value.taste
+            .cats-card__item-desc !{ value.desc }
+            .cats-card__item-cat-image
+            .cats-card__item-size
+              .cats-card__item-size-bold= ( value.weight.toString()).replace( '.', ',' )
+              .cats-card__item-size-light кг
+            .cats-card__item-outer-desc !{ value.outerdesc }

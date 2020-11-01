@@ -13,9 +13,14 @@
 
 
   $font-files: (
-    'Exo20': (
+    Exo20: (
       '100-normal': ( 'Exo2.0-Thin', 'otf' ),
     ),
+
+    TrebuchetMS: (
+      default: ( 'normal', 'ttf' ),
+      default-italic: ( 'italic', 'ttf' )
+    )
   );
 
 
@@ -135,25 +140,45 @@
     $__weight: get-weight( $weight );
     $__key: $__weight + '-' + $style;
     $__glob_key: $family + '-' + $__key;
+    $__data: ();
+
+    $__use_weight: false;
+    $__use_style: false;
 
     @if ( _maps.has-key( $font-files, $family, $__key )) {
       $__data: _maps.get( $font-files, $family, $__key );
-      $__file: _maps.get( $__data, 1 );
+      $__use_weight: true;
+      $__use_style: true;
+    }
 
-      @font-face {
-        font-family: #{ $family };
-        font-weight: #{ $__weight };
-        font-style: #{ $style };
+    @else if ( _maps.has-key( $font-files, $family, 'default-' + $style )) {
+      $__data: _maps.get( $font-files, $family, 'default-' + $style );
+      $__use_style: true;
+    }
 
-        @for $i from 1 through list.length( $__data ) {
-          @if ( $i > 1 ) {
-            $__ext: get-ext( _maps.get( $__data, $i ));
-            $__format: get-type( $__ext );
-            $__format_str: '';
-            @if ( string.length( $__format ) > 0 ) { $__format_str: format('#{ $__format }'); }
+    @else
+      { $__data: _maps.get( $font-files, $family, default ); }
 
-            src: url( '../fonts/' + $family + '/' + $__file + '.' + $__ext ) #{$__format_str};
-          }
+    $__file: _maps.get( $__data, 1 );
+
+
+    @font-face {
+      font-family: #{ $family };
+
+      @if ( $__use_weight )
+        { font-weight: #{ $__weight }; }
+
+      @if ( $__use_style )
+        { font-style: #{ $style }; }
+
+      @for $i from 1 through list.length( $__data ) {
+        @if ( $i > 1 ) {
+          $__ext: get-ext( _maps.get( $__data, $i ));
+          $__format: get-type( $__ext );
+          $__format_str: '';
+          @if ( string.length( $__format ) > 0 ) { $__format_str: format('#{ $__format }'); }
+
+          src: url( '../fonts/' + $family + '/' + $__file + '.' + $__ext ) #{$__format_str};
         }
       }
     }

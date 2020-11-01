@@ -3,6 +3,8 @@
 
 @use '../mixins/font';
 @use '../mixins/flex';
+@use '../mixins/line';
+@use '../mixins/background';
 
 @use '../styles/bootstrap';
 
@@ -15,19 +17,105 @@
 //------------------------------------------------------------------------------------------------------------
 
 
-  $padding-top: 20px;
+  $padding-top: 18px;
   $padding-right: 12px;
-  $padding-bottom: 12px;
+  $padding-bottom: 0;
   $padding-left: 45;
 
+
   $item-count: 3;
-  $item-spacing-x: _maps.get( bootstrap.$settings, spacing );
-  $item-spacing-y: 30px;
+  $item-spacing-x: _maps.get( bootstrap.$settings, spacing ) * 2;
+  $item-spacing-y: 18px;
   $item-width: calc(( 100% - #{ $item-spacing-x * ( $item-count - 1 )}) / #{ $item-count });
+
   $item-border-width: 4px;
   $item-border-color: #1698d9;
   $item-border-radius: 0 10px 10px 10px;
   $item-angle-cut: $padding-left;
+
+  $item-background: #f2f2f2;
+
+
+  $updesc-font-family: TrebuchetMS;
+  $updesc-font-weight: normal;
+  $updesc-font-size: 16px;
+  $updesc-line-height: 19px;
+  $updesc-lines: 1;
+  $updesc-color: #666;
+  $updesc-spacing: 0px;
+  $updesc-letter-spacing: 0px;
+
+
+  $title-font-family: TrebuchetMS;
+  $title-font-weight: bold;
+  $title-font-size: 48px;
+  $title-line-height: 50px;
+  $title-lines: 1;
+  $title-color: #000;
+  $title-spacing: 9px;
+  $title-letter-spacing: 1.5px;
+
+
+  $taste-font-family: TrebuchetMS;
+  $taste-font-weight: bold;
+  $taste-font-size: 24px;
+  $taste-line-height: 29px;
+  $taste-lines: 1;
+  $taste-color: #000;
+  $taste-spacing: 0px;
+  $taste-letter-spacing: .5px;
+
+
+  $desc-font-family: TrebuchetMS;
+  $desc-font-weight: 100;
+  $desc-font-weight-bold: 500;
+  $desc-font-size: 14px;
+  $desc-line-height: 16px;
+  $desc-lines: 3;
+  $desc-color: #666;
+  $desc-spacing: 14px;
+  $desc-letter-spacing: .2px;
+
+
+  $cat-image-spacing: 18px;
+  $cat-image-bottom-overlay: -81px;
+  $cat-image-height: 268px;
+
+
+  $size-size: 81px;
+  $size-shift: 11px;
+  $size-background: #1698d9;
+
+  $size-bold-font-family: TrebuchetMS;
+  $size-bold-font-weight: regular;
+  $size-bold-font-size: 42px;
+  $size-bold-line-height: 42px;
+  $size-bold-color: #fff;
+
+  $size-light-font-family: TrebuchetMS;
+  $size-light-font-weight: regular;
+  $size-light-font-size: 21px;
+  $size-light-line-height: 22px;
+  $size-light-color: #fff;
+
+
+  $outer-desc-font-family: TrebuchetMS;
+  $outer-desc-font-weight: bold;
+  $outer-desc-font-size: 13px;
+  $outer-desc-line-height: 16px;
+  $outer-desc-lines: 1;
+  $outer-desc-color: #fff;
+  $outer-desc-hover-color: #1698d9;
+  $outer-desc-spacing: 14px;
+  $outer-desc-letter-spacing: .2px;
+
+
+  @include font.include( $updesc-font-family, $updesc-font-weight );
+  @include font.include( $title-font-family, $title-font-weight );
+  @include font.include( $taste-font-family, $taste-font-weight );
+  @include font.include( $desc-font-family, $desc-font-weight );
+  @include font.include( $desc-font-family, $desc-font-weight-bold );
+  @include font.include( $size-bold-font-family, $size-bold-font-weight );
 
 
 //------------------------------------------------------------------------------------------------------------
@@ -48,6 +136,7 @@
 
 
     &__item {
+      @include flex.init( column, nowrap, stretch );
       border: $item-border-width solid $item-border-color;
       padding-top: $padding-top;
       padding-right: $padding-right;
@@ -57,8 +146,8 @@
       margin-top: $item-spacing-y;
       border-radius: $item-border-radius;
       clip-path: polygon( #{ $item-angle-cut }px 0, 100% 0, 100% 100%, 0 100%, 0 #{ $item-angle-cut }px );
-      position: relative;
-      /* TODO: Delete */ min-height: 300px;
+      position: relative; overflow: hidden;
+      background-color: $item-background;
 
 
       // Срезанная граница
@@ -74,6 +163,108 @@
         left: -$item-border-width;
         display: block; width: $__width; height: $__height; transform: rotate( 45deg );
         transform-origin: 50% 100%;
+      }
+
+
+      // Верхнее описание карточки
+      &-updesc {
+        @include line.clamp( $updesc-lines, $updesc-line-height );
+        @include font.init( $updesc-font-family, $updesc-font-weight );
+        letter-spacing: $updesc-letter-spacing;
+        margin-top: $updesc-spacing;
+        font-size: $updesc-font-size;
+        color: $updesc-color;
+      }
+
+
+      // Название яства
+      &-title {
+        @include line.clamp( $title-lines, $title-line-height );
+        @include font.init( $title-font-family, $title-font-weight );
+        letter-spacing: $title-letter-spacing;
+        margin-top: $title-spacing;
+        font-size: $title-font-size;
+        color: $title-color;
+      }
+
+
+      // Вкус яства
+      &-taste {
+        @include line.clamp( $taste-lines, $taste-line-height );
+        @include font.init( $taste-font-family, $taste-font-weight );
+        letter-spacing: $taste-letter-spacing;
+        margin-top: $taste-spacing;
+        font-size: $taste-font-size;
+        color: $taste-color;
+      }
+
+
+      // Подарочная информация
+      &-desc {
+        @include line.clamp( $desc-lines, $desc-line-height );
+        @include font.init( $desc-font-family, $desc-font-weight );
+        margin-top: $desc-spacing;
+        flex-grow: 1;
+
+        &, & > b {
+          letter-spacing: $desc-letter-spacing;
+          font-size: $desc-font-size;
+          color: $desc-color;
+        }
+        & > b { @include font.init( $desc-font-family, $desc-font-weight-bold ); }
+      }
+
+
+      // Фото кота
+      &-cat-image {
+        @include background.init( url( '../images/objects/funny-cat.png' ));
+        @include background.position( center, top );
+        width: calc( 100% + #{ $padding-left + $padding-right });
+        height: $cat-image-height - $cat-image-bottom-overlay;
+        margin-top: $cat-image-spacing;
+        margin-left: #{ -$padding-left }px;
+        margin-right: -$padding-right;
+        margin-bottom: -$padding-bottom + $cat-image-bottom-overlay;
+      }
+
+
+      // Подпись для веса товара
+      &-size {
+        @include flex.init( column, nowrap, center, center );
+        width: $size-size; height: $size-size;
+        bottom: $size-shift; right: $size-shift;
+        background-color: $size-background;
+        position: absolute; border-radius: 50%;
+
+        &-bold {
+          @include line.clamp( 1, $size-bold-line-height );
+          @include font.init( $size-bold-font-family, $size-bold-font-weight );
+          font-size: $size-bold-font-size;
+          color: $size-bold-color;
+        }
+
+        &-light {
+          @include line.clamp( 1, $size-light-line-height );
+          @include font.init( $size-light-font-family, $size-light-font-weight );
+          font-size: $size-light-font-size;
+          color: $size-light-color;
+        }
+      }
+
+
+      // Текст под карточкой
+      &-outer-desc {
+        @include line.clamp( $outer-desc-lines, $outer-desc-line-height );
+        @include font.init( $outer-desc-font-family, $outer-desc-font-weight );
+        margin-top: $outer-desc-spacing;
+        letter-spacing: $outer-desc-letter-spacing;
+        font-size: $outer-desc-font-size;
+        color: $outer-desc-color;
+
+        & > a {
+          text-decoration: underline;
+          color: $outer-desc-hover-color;
+        }
       }
 
 
