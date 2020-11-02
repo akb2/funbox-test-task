@@ -2,28 +2,43 @@
   let cats_card = {
     items: [
       {
+        status: 'status_default',
         updesc: 'Сказочное заморское яство',
         title: 'Нямушка',
         taste: 'с фуа-гра',
         desc: '<b>10</b> порций<br>мышь в подарок',
         weight: 0.5,
-        outerdesc: 'Чего сидишь? Порадуй котэ, <a href="javascript:void(0)">купи</a>.'
+        outerdesc: {
+          default: 'Чего сидишь? Порадуй котэ, <a href="javascript:void(0)">купи</a>.',
+          selected: 'Печень утки разварная с артишоками.',
+          disabled: 'Печалька, с фуа-гра закончился.'
+        }
       },
       {
+        status: 'status_default',
         updesc: 'Сказочное заморское яство',
         title: 'Нямушка',
         taste: 'с рыбой',
         desc: '<b>40</b> порций<br><b>2</b> мыши в подарок',
         weight: 0.5,
-        outerdesc: 'Чего сидишь? Порадуй котэ, <a href="javascript:void(0)">купи</a>.'
+        outerdesc: {
+          default: 'Чего сидишь? Порадуй котэ, <a href="javascript:void(0)">купи</a>.',
+          selected: 'Головы щучьи с чесноком да свежайшая сёмгушка.',
+          disabled: 'Печалька, с рыбой закончился.'
+        }
       },
       {
+        status: 'status_disabled',
         updesc: 'Сказочное заморское яство',
         title: 'Нямушка',
         taste: 'с курой',
         desc: '<b>100</b> порций<br><b>5</b> мышей в подарок<br>заказчик доволен',
         weight: 0.5,
-        outerdesc: 'Чего сидишь? Порадуй котэ, <a href="javascript:void(0)">купи</a>.'
+        outerdesc: {
+          default: 'Чего сидишь? Порадуй котэ, <a href="javascript:void(0)">купи</a>.',
+          selected: 'Филе из цыплят с трюфелями в бульоне.',
+          disabled: 'Печалька, с курой закончился.'
+        }
       }
     ]
   };

@@ -29,7 +29,6 @@
   $item-width: calc(( 100% - #{ $item-spacing-x * ( $item-count - 1 )}) / #{ $item-count });
 
   $item-border-width: 4px;
-  $item-border-color: #1698d9;
   $item-border-radius: 0 10px 10px 10px;
   $item-angle-cut: $padding-left;
 
@@ -41,7 +40,6 @@
   $updesc-font-size: 16px;
   $updesc-line-height: 19px;
   $updesc-lines: 1;
-  $updesc-color: #666;
   $updesc-spacing: 0px;
   $updesc-letter-spacing: 0px;
 
@@ -51,7 +49,6 @@
   $title-font-size: 48px;
   $title-line-height: 50px;
   $title-lines: 1;
-  $title-color: #000;
   $title-spacing: 9px;
   $title-letter-spacing: 1.5px;
 
@@ -61,7 +58,6 @@
   $taste-font-size: 24px;
   $taste-line-height: 29px;
   $taste-lines: 1;
-  $taste-color: #000;
   $taste-spacing: 0px;
   $taste-letter-spacing: .5px;
 
@@ -72,7 +68,6 @@
   $desc-font-size: 14px;
   $desc-line-height: 16px;
   $desc-lines: 3;
-  $desc-color: #666;
   $desc-spacing: 14px;
   $desc-letter-spacing: .2px;
 
@@ -100,7 +95,7 @@
 
 
   $outer-desc-font-family: TrebuchetMS;
-  $outer-desc-font-weight: bold;
+  $outer-desc-font-weight: 400;
   $outer-desc-font-size: 13px;
   $outer-desc-line-height: 16px;
   $outer-desc-lines: 1;
@@ -108,6 +103,24 @@
   $outer-desc-hover-color: #1698d9;
   $outer-desc-spacing: 14px;
   $outer-desc-letter-spacing: .2px;
+
+
+
+
+  $item-border-color: #1698d9;
+  $updesc-color: #666;
+  $title-color: #000;
+  $taste-color: #000;
+  $desc-color: #666;
+
+  $disabled-opacity: 0.5;
+  $disabled-item-border-color: #b3b3b3;
+  $disabled-updesc-color: #b3b3b3;
+  $disabled-title-color: #b3b3b3;
+  $disabled-taste-color: #b3b3b3;
+  $disabled-desc-color: #b3b3b3;
+
+
 
 
   @include font.include( $updesc-font-family, $updesc-font-weight );
@@ -131,38 +144,49 @@
 //------------------------------------------------------------------------------------------------------------
 
 
+  // Блоки котов
   .cats-card {
+    $__selector: &;
     @include flex.init( row, wrap, center, stretch );
 
 
+    // Элемент
     &__item {
-      @include flex.init( column, nowrap, stretch );
-      border: $item-border-width solid $item-border-color;
-      padding-top: $padding-top;
-      padding-right: $padding-right;
-      padding-bottom: $padding-bottom;
-      padding-left: #{ $padding-left }px;
+      @include flex.init( row, nowrap, center, stretch );
+      position: relative;
       width: $item-width;
-      margin-top: $item-spacing-y;
-      border-radius: $item-border-radius;
-      clip-path: polygon( #{ $item-angle-cut }px 0, 100% 0, 100% 100%, 0 100%, 0 #{ $item-angle-cut }px );
-      position: relative; overflow: hidden;
-      background-color: $item-background;
+      padding-bottom: $outer-desc-spacing + ( $outer-desc-line-height * $outer-desc-lines );
 
 
-      // Срезанная граница
-      &:before {
-        $__width: $item-border-width * 1.2;
-        $__height: #{ math.sqrt( math.pow( $item-angle-cut, 2 ) * 2 )}px;
-        $__angle_cut: #{ $item-angle-cut }px;
-        $__top: calc( #{ $__angle_cut } - #{ $__height } - #{ $item-border-width });
-        background: $item-border-color;
+      // Контейнер
+      &-wrapper {
+        @include flex.init( column, nowrap, stretch );
+        border: $item-border-width solid $item-border-color;
+        padding-top: $padding-top;
+        padding-right: $padding-right;
+        padding-bottom: $padding-bottom;
+        padding-left: #{ $padding-left }px;
+        margin-top: $item-spacing-y;
+        border-radius: $item-border-radius;
+        clip-path: polygon( #{ $item-angle-cut }px 0, 100% 0, 100% 100%, 0 100%, 0 #{ $item-angle-cut }px );
+        position: relative; overflow: hidden; width: 100%;
+        background-color: $item-background;
 
-        content: ''; position: absolute;
-        top: $__top;
-        left: -$item-border-width;
-        display: block; width: $__width; height: $__height; transform: rotate( 45deg );
-        transform-origin: 50% 100%;
+
+        // Срезанная граница
+        &:before {
+          $__width: $item-border-width * 1.2;
+          $__height: #{ math.sqrt( math.pow( $item-angle-cut, 2 ) * 2 )}px;
+          $__angle_cut: #{ $item-angle-cut }px;
+          $__top: calc( #{ $__angle_cut } - #{ $__height } - #{ $item-border-width });
+          background: $item-border-color;
+  
+          content: ''; position: absolute;
+          top: $__top;
+          left: -$item-border-width;
+          display: block; width: $__width; height: $__height; transform: rotate( 45deg );
+          transform-origin: 50% 100%;
+        }
       }
 
 
@@ -255,12 +279,13 @@
       // Текст под карточкой
       &-outer-desc {
         @include line.clamp( $outer-desc-lines, $outer-desc-line-height );
-        @include font.init( $outer-desc-font-family, $outer-desc-font-weight );
         margin-top: $outer-desc-spacing;
         letter-spacing: $outer-desc-letter-spacing;
         font-size: $outer-desc-font-size;
         color: $outer-desc-color;
+        bottom: 0; position: absolute; left: 0; text-align: center; width: 100%;
 
+        &, & > a { @include font.init( $outer-desc-font-family, $outer-desc-font-weight ); }
         & > a {
           text-decoration: underline;
           color: $outer-desc-hover-color;
@@ -271,6 +296,47 @@
       // Последующие элементы
       & + & { margin-left: $item-spacing-x; }
       &:nth-of-type( #{ $item-count }n + 1 ) { margin-left: 0; }
+    }
+
+
+    // Статусы
+    &__item.status_disabled {
+      #{ $__selector } {
+
+        // Элемент
+        &__item {
+          &-updesc, &-title, &-taste, &-desc { opacity: $disabled-opacity; }
+
+          // Контейнер
+          &-wrapper {
+            border-color: $disabled-item-border-color;
+            &:before { background-color: $disabled-item-border-color; }
+          }
+
+          // Верхнее описание карточки
+          &-updesc { color: $disabled-updesc-color; }
+
+          // Название яства
+          &-title { color: $disabled-title-color; }
+
+          // Вкус яства
+          &-taste { color: $disabled-taste-color; }
+
+          // Подарочная информация
+          &-desc { &, & > b { color: $disabled-desc-color; }}
+        }
+      }
+    }
+  }
+
+
+  // Статусы текстовых элементов
+  .status {
+    $__statuses: default disabled selected;
+
+    @each $__status in $__statuses {
+      &_#{ $__status }__text { visibility: hidden; }
+      &_#{ $__status } &_#{ $__status }__text { visibility: visible; }
     }
   }
 
