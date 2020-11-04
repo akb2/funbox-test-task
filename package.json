@@ -1,7 +1,7 @@
 {
   "name": "funbox-test-task",
   "version": "1.0.0",
-  "description": "My layouts for website impexlogisic.ru. Using: Webpack with SASS, Pug, Babel.",
+  "description": "My test task for FunBox company.",
   "main": "app.js",
   "scripts": {
     "build": "webpack --mode production",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/akb2/impex-logistic-ru-layout.git"
+    "url": "git+https://github.com/akb2/funbox-test-task.git"
   },
   "keywords": [
     "layout",
@@ -21,9 +21,9 @@
   "author": "Andrew Kobelev",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/akb2/impex-logistic-ru-layout/issues"
+    "url": "https://github.com/akb2/funbox-test-task/issues"
   },
-  "homepage": "https://github.com/akb2/impex-logistic-ru-layout#readme",
+  "homepage": "https://github.com/akb2/funbox-test-task#readme",
   "devDependencies": {
     "@babel/core": "^7.12.3",
     "@babel/preset-env": "^7.12.1",
