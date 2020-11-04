@@ -7,20 +7,4 @@ block content
     .container
       .text-center
         h1 Ты сегодня покормил кота?
-
-      .cats-card
-        include ../../layouts/main/datas/cats-card
-        - for ( let value of cats_card.items )
-          .cats-card__item( class = ( value.status ))
-            .cats-card__item-wrapper
-              .cats-card__item-updesc= value.updesc
-              .cats-card__item-title= value.title
-              .cats-card__item-taste= value.taste
-              .cats-card__item-desc !{ value.desc }
-              .cats-card__item-cat-image
-              .cats-card__item-size
-                .cats-card__item-size-bold= ( value.weight.toString()).replace( '.', ',' )
-                .cats-card__item-size-light кг
-            .cats-card__item-outer-desc.status_default__text !{ value.outerdesc.default }
-            .cats-card__item-outer-desc.status_selected__text !{ value.outerdesc.selected }
-            .cats-card__item-outer-desc.status_disabled__text !{ value.outerdesc.disabled }
+      .cats-card#cats-card-once-element

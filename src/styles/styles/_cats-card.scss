@@ -1,10 +1,13 @@
 @use 'sass:math';
 @use '../functions/maps' as _maps;
 
+@use '../settings/screens';
+
 @use '../mixins/font';
 @use '../mixins/flex';
 @use '../mixins/line';
 @use '../mixins/background';
+@use '../mixins/transition';
 
 @use '../styles/bootstrap';
 
@@ -17,6 +20,8 @@
 //------------------------------------------------------------------------------------------------------------
 
 
+  $transition: .2s;
+
   $padding-top: 18px;
   $padding-right: 12px;
   $padding-bottom: 0;
@@ -24,9 +29,15 @@
 
 
   $item-count: 3;
+  $item-count-tablet: 2;
+  $item-count-mobile: 1;
+
   $item-spacing-x: _maps.get( bootstrap.$settings, spacing ) * 2;
   $item-spacing-y: 18px;
+
   $item-width: calc(( 100% - #{ $item-spacing-x * ( $item-count - 1 )}) / #{ $item-count });
+  $item-width-tablet: calc(( 100% - #{ $item-spacing-x * ( $item-count-tablet - 1 )}) / #{ $item-count-tablet });
+  $item-width-mobile: calc(( 100% - #{ $item-spacing-x * ( $item-count-mobile - 1 )}) / #{ $item-count-mobile });
 
   $item-border-width: 4px;
   $item-border-radius: 0 10px 10px 10px;
@@ -79,19 +90,16 @@
 
   $size-size: 81px;
   $size-shift: 11px;
-  $size-background: #1698d9;
 
   $size-bold-font-family: TrebuchetMS;
   $size-bold-font-weight: regular;
   $size-bold-font-size: 42px;
   $size-bold-line-height: 42px;
-  $size-bold-color: #fff;
 
   $size-light-font-family: TrebuchetMS;
   $size-light-font-weight: regular;
   $size-light-font-size: 21px;
   $size-light-line-height: 22px;
-  $size-light-color: #fff;
 
 
   $outer-desc-font-family: TrebuchetMS;
@@ -99,26 +107,99 @@
   $outer-desc-font-size: 13px;
   $outer-desc-line-height: 16px;
   $outer-desc-lines: 1;
-  $outer-desc-color: #fff;
-  $outer-desc-hover-color: #1698d9;
   $outer-desc-spacing: 14px;
   $outer-desc-letter-spacing: .2px;
 
 
 
 
-  $item-border-color: #1698d9;
-  $updesc-color: #666;
-  $title-color: #000;
-  $taste-color: #000;
-  $desc-color: #666;
-
   $disabled-opacity: 0.5;
+  $colors: (
+    default: (
+      item-border-color: #1698d9,
+      updesc-color: #666,
+      title-color: #000,
+      taste-color: #000,
+      desc-color: #666,
+      size-background: #1698d9,
+      bold-color: #fff,
+      light-color: #fff,
+      outer-desc-color: #fff,
+      outer-desc-link-color: #1698d9,
+
+      hover: (
+        item-border-color: #2ea8e6,
+        updesc-color: #666,
+        title-color: #000,
+        taste-color: #000,
+        desc-color: #666,
+        size-background: #2ea8e6,
+        bold-color: #fff,
+        light-color: #fff,
+        outer-desc-color: #fff,
+        outer-desc-link-color: #1698d9,
+      )
+    ),
+
+    disabled: (
+      item-border-color: #b3b3b3,
+      updesc-color: #b3b3b3,
+      title-color: #b3b3b3,
+      taste-color: #b3b3b3,
+      desc-color: #b3b3b3,
+      size-background: #b3b3b3,
+      bold-color: #fff,
+      light-color: #fff,
+      outer-desc-color: #fff,
+      outer-desc-link-color: #1698d9,
+
+      hover: (
+        item-border-color: #b3b3b3,
+        updesc-color: #b3b3b3,
+        title-color: #b3b3b3,
+        taste-color: #b3b3b3,
+        desc-color: #b3b3b3,
+        size-background: #b3b3b3,
+        bold-color: #fff,
+        light-color: #fff,
+        outer-desc-color: #fff,
+        outer-desc-link-color: #1698d9,
+      )
+    ),
+
+    selected: (
+      item-border-color: #E52E7A,
+      updesc-color: #666,
+      title-color: #E52E7A,
+      taste-color: #E52E7A,
+      desc-color: #666,
+      size-background: #d91667,
+      bold-color: #fff,
+      light-color: #fff,
+      outer-desc-color: #E52E7A,
+      outer-desc-link-color: #E52E7A,
+
+      hover: (
+        item-border-color: #E52E7A,
+        updesc-color: #E62E7A,
+        title-color: #000,
+        taste-color: #000,
+        desc-color: #666,
+        size-background: #E52E7A,
+        bold-color: #fff,
+        light-color: #fff,
+        outer-desc-color: #fff,
+        outer-desc-link-color: #1698d9,
+      )
+    )
+  );
+
   $disabled-item-border-color: #b3b3b3;
   $disabled-updesc-color: #b3b3b3;
   $disabled-title-color: #b3b3b3;
   $disabled-taste-color: #b3b3b3;
   $disabled-desc-color: #b3b3b3;
+  $disabled-size-background: #b3b3b3;
 
 
 
@@ -160,8 +241,9 @@
 
       // Контейнер
       &-wrapper {
+        @include transition.many( border-color, $transition );
         @include flex.init( column, nowrap, stretch );
-        border: $item-border-width solid $item-border-color;
+        border: $item-border-width solid transparent;
         padding-top: $padding-top;
         padding-right: $padding-right;
         padding-bottom: $padding-bottom;
@@ -179,8 +261,10 @@
           $__height: #{ math.sqrt( math.pow( $item-angle-cut, 2 ) * 2 )}px;
           $__angle_cut: #{ $item-angle-cut }px;
           $__top: calc( #{ $__angle_cut } - #{ $__height } - #{ $item-border-width });
-          background: $item-border-color;
-  
+
+          @include transition.many( background-color, $transition );
+          background: transparent;
+
           content: ''; position: absolute;
           top: $__top;
           left: -$item-border-width;
@@ -192,34 +276,34 @@
 
       // Верхнее описание карточки
       &-updesc {
+        @include transition.many( color, $transition );
         @include line.clamp( $updesc-lines, $updesc-line-height );
         @include font.init( $updesc-font-family, $updesc-font-weight );
         letter-spacing: $updesc-letter-spacing;
         margin-top: $updesc-spacing;
         font-size: $updesc-font-size;
-        color: $updesc-color;
       }
 
 
       // Название яства
       &-title {
+        @include transition.many( color, $transition );
         @include line.clamp( $title-lines, $title-line-height );
         @include font.init( $title-font-family, $title-font-weight );
         letter-spacing: $title-letter-spacing;
         margin-top: $title-spacing;
         font-size: $title-font-size;
-        color: $title-color;
       }
 
 
       // Вкус яства
       &-taste {
+        @include transition.many( color, $transition );
         @include line.clamp( $taste-lines, $taste-line-height );
         @include font.init( $taste-font-family, $taste-font-weight );
         letter-spacing: $taste-letter-spacing;
         margin-top: $taste-spacing;
         font-size: $taste-font-size;
-        color: $taste-color;
       }
 
 
@@ -231,9 +315,9 @@
         flex-grow: 1;
 
         &, & > b {
+          @include transition.many( color, $transition );
           letter-spacing: $desc-letter-spacing;
           font-size: $desc-font-size;
-          color: $desc-color;
         }
         & > b { @include font.init( $desc-font-family, $desc-font-weight-bold ); }
       }
@@ -254,24 +338,24 @@
 
       // Подпись для веса товара
       &-size {
+        @include transition.many( background-color, $transition );
         @include flex.init( column, nowrap, center, center );
         width: $size-size; height: $size-size;
         bottom: $size-shift; right: $size-shift;
-        background-color: $size-background;
         position: absolute; border-radius: 50%;
 
         &-bold {
+          @include transition.many( color, $transition );
           @include line.clamp( 1, $size-bold-line-height );
           @include font.init( $size-bold-font-family, $size-bold-font-weight );
           font-size: $size-bold-font-size;
-          color: $size-bold-color;
         }
 
         &-light {
+          @include transition.many( color, $transition );
           @include line.clamp( 1, $size-light-line-height );
           @include font.init( $size-light-font-family, $size-light-font-weight );
           font-size: $size-light-font-size;
-          color: $size-light-color;
         }
       }
 
@@ -282,14 +366,10 @@
         margin-top: $outer-desc-spacing;
         letter-spacing: $outer-desc-letter-spacing;
         font-size: $outer-desc-font-size;
-        color: $outer-desc-color;
         bottom: 0; position: absolute; left: 0; text-align: center; width: 100%;
 
         &, & > a { @include font.init( $outer-desc-font-family, $outer-desc-font-weight ); }
-        & > a {
-          text-decoration: underline;
-          color: $outer-desc-hover-color;
-        }
+        & > a { text-decoration: underline; }
       }
 
 
@@ -300,30 +380,55 @@
 
 
     // Статусы
-    &__item.status_disabled {
-      #{ $__selector } {
-
-        // Элемент
-        &__item {
-          &-updesc, &-title, &-taste, &-desc { opacity: $disabled-opacity; }
-
-          // Контейнер
-          &-wrapper {
-            border-color: $disabled-item-border-color;
-            &:before { background-color: $disabled-item-border-color; }
+    &__item.status {
+      @each $status, $values in $colors {
+        @for $num from 0 through 1 {
+          $__hov_selector: '';
+          @if ( $num == 1 ) {
+            $__hov_selector: ':hover';
+            $values: _maps.get( $values, hover );
           }
 
-          // Верхнее описание карточки
-          &-updesc { color: $disabled-updesc-color; }
+          &_#{ $status }#{ $__hov_selector } {
+            #{ $__selector } {
 
-          // Название яства
-          &-title { color: $disabled-title-color; }
+              // Элемент
+              &__item {
 
-          // Вкус яства
-          &-taste { color: $disabled-taste-color; }
+                // Контейнер
+                &-wrapper {
+                  border-color: _maps.get( $values, item-border-color );
+                  &:before { background-color: _maps.get( $values, item-border-color ); }
+                }
 
-          // Подарочная информация
-          &-desc { &, & > b { color: $disabled-desc-color; }}
+                // Верхнее описание карточки
+                &-updesc { color: _maps.get( $values, updesc-color ); }
+
+                // Название яства
+                &-title { color: _maps.get( $values, title-color ); }
+
+                // Вкус яства
+                &-taste { color: _maps.get( $values, taste-color ); }
+
+                // Подарочная информация
+                &-desc { &, & > b { color: _maps.get( $values, desc-color ); }}
+
+                // Подпись для веса товара
+                &-size {
+                  background-color: _maps.get( $values, size-background );
+
+                  &-bold { color: _maps.get( $values, bold-color ); }
+                  &-light { color: _maps.get( $values, light-color ); }
+                }
+
+                // Текст под карточкой
+                &-outer-desc {
+                  color: _maps.get( $values, outer-desc-color );
+                  & > a { color: _maps.get( $values, outer-desc-link-color ); }
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -332,15 +437,67 @@
 
   // Статусы текстовых элементов
   .status {
+    $__selector: &;
     $__statuses: default disabled selected;
 
     @each $__status in $__statuses {
       &_#{ $__status }__text { visibility: hidden; }
       &_#{ $__status } &_#{ $__status }__text { visibility: visible; }
     }
+
+    &_default, &_selected {
+      .cats-card__item-wrapper { cursor: pointer; }
+    }
+
+    &_disabled {
+      .cats-card__item {
+        &-updesc, &-title, &-taste, &-desc, &-cat-image { opacity: $disabled-opacity; }
+      }
+    }
   }
 
 
 //------------------------------------------------------------------------------------------------------------
 // Стили
+//------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+//------------------------------------------------------------------------------------------------------------
+// Стили для адаптива
+//------------------------------------------------------------------------------------------------------------
+
+
+  // Планшетная версия
+  @media screen and ( max-width: #{ screens.$tablet_resolution }px ) {
+    .cats-card {
+      &__item {
+        width: $item-width-tablet;
+
+        // Последующие элементы
+        & + & { margin-left: $item-spacing-x; }
+        &:nth-of-type( #{ $item-count-tablet }n + 1 ) { margin-left: 0; }
+      }
+    }
+  }
+
+
+  // Телефонная версия
+  @media screen and ( max-width: #{ screens.$mobile_resolution }px ) {
+    .cats-card {
+      &__item {
+        width: $item-width-mobile;
+
+        // Последующие элементы
+        & + & { margin-left: $item-spacing-x; }
+        &:nth-of-type( #{ $item-count-mobile }n + 1 ) { margin-left: 0; }
+      }
+    }
+  }
+
+
+//------------------------------------------------------------------------------------------------------------
+// Стили для адаптива
 //------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,36 @@
+@font-face {
+  font-family: Exo20;
+  font-weight: 100;
+  font-style: normal;
+  src: url("../fonts/Exo20/Exo2.0-Thin.otf") format("opentype");
+}
+* {
+  font-family: Exo20;
+  font-weight: 100;
+  font-style: normal;
+  font-size: 13px;
+  line-height: 16px;
+}
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box;
+  outline: none;
+  margin: 0;
+  padding: 0;
+  z-index: 1;
+}
+
+html {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: static;
+}
+
+body, html, header, section {
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+}

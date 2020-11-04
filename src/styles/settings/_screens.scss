@@ -30,7 +30,9 @@
 
   // Где начинается мобайл
   $mobile: middle;
+  $tablet: medium;
   $mobile_resolution: _maps.get( $breakpoints, $mobile );
+  $tablet_resolution: _maps.get( $breakpoints, $tablet );
 
 
 //----------------------------------------------------------------------------------------------------------------------------------------
